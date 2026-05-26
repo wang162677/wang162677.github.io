@@ -1,0 +1,560 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Claude Code 十个常用 Skill 推荐，含各职业最佳 Skill 组合方案。从基础概念到实战安装，一篇讲透 Skills 体系。">
+    <title>Claude Code 十个常用 Skill 推荐（含各职业最佳 Skill）</title>
+    <style>
+        :root {
+            --bg: #0d1117;
+            --card: #161b22;
+            --border: #21262d;
+            --text: #c9d1d9;
+            --text-muted: #8b949e;
+            --accent: #58a6ff;
+            --accent2: #f78166;
+            --code-bg: #0d1117;
+            --tag-bg: #1f2937;
+            --heading: #f0f6fc;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: "PingFang SC", "Microsoft YaHei", -apple-system, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.9;
+            font-size: 16px;
+        }
+
+        /* ── 顶部导航 ── */
+        .navbar {
+            background: var(--card);
+            border-bottom: 1px solid var(--border);
+            padding: 14px 0;
+            position: sticky; top: 0; z-index: 100;
+            backdrop-filter: blur(12px);
+        }
+        .nav-inner {
+            max-width: 780px; margin: 0 auto; padding: 0 20px;
+            display: flex; align-items: center; justify-content: space-between;
+        }
+        .nav-logo { font-weight: 700; font-size: 1.05em; color: var(--accent); text-decoration: none; }
+        .nav-links { display: flex; gap: 20px; }
+        .nav-links a { color: var(--text-muted); text-decoration: none; font-size: 0.9em; }
+        .nav-links a:hover { color: var(--text); }
+
+        /* ── 文章容器 ── */
+        .container { max-width: 780px; margin: 0 auto; padding: 0 20px; }
+
+        /* ── 文章头部 ── */
+        .article-header { padding: 48px 0 32px; text-align: center; }
+        .article-header h1 {
+            font-size: 2em; color: var(--heading); line-height: 1.4;
+            letter-spacing: 0.02em; margin-bottom: 16px;
+        }
+        .article-meta {
+            color: var(--text-muted); font-size: 0.88em;
+            display: flex; gap: 16px; justify-content: center; flex-wrap: wrap;
+        }
+        .article-meta span { white-space: nowrap; }
+
+        /* ── 特色图片占位 ── */
+        .featured-img {
+            background: linear-gradient(135deg, #1a2332 0%, #162030 50%, #1a2332 100%);
+            border: 1px solid var(--border); border-radius: 12px;
+            text-align: center; padding: 60px 20px; margin: 0 0 40px;
+            color: var(--text-muted); font-size: 0.9em;
+        }
+
+        /* ── 正文 ── */
+        .article-body h2 {
+            font-size: 1.45em; color: var(--heading);
+            margin: 48px 0 16px; padding-bottom: 8px;
+            border-bottom: 1px solid var(--border);
+        }
+        .article-body h3 {
+            font-size: 1.15em; color: var(--heading);
+            margin: 32px 0 12px;
+        }
+        .article-body p { margin: 14px 0; color: var(--text); }
+        .article-body strong { color: var(--heading); }
+        .article-body ul, .article-body ol { margin: 12px 0 12px 24px; }
+        .article-body li { margin: 6px 0; }
+
+        /* ── 代码块 ── */
+        .article-body pre {
+            background: var(--code-bg); border: 1px solid var(--border);
+            border-radius: 8px; padding: 16px 20px; overflow-x: auto;
+            font-size: 0.88em; line-height: 1.6; margin: 16px 0;
+            font-family: "Cascadia Code", "Fira Code", "Consolas", monospace;
+        }
+        .article-body code {
+            background: var(--code-bg); border: 1px solid var(--border);
+            border-radius: 4px; padding: 2px 6px; font-size: 0.9em;
+            font-family: "Cascadia Code", "Fira Code", "Consolas", monospace;
+        }
+        .article-body pre code {
+            background: none; border: none; padding: 0; font-size: inherit;
+        }
+
+        /* ── 引用块 ── */
+        .article-body blockquote {
+            border-left: 3px solid var(--accent);
+            padding: 12px 20px; margin: 20px 0;
+            background: rgba(88, 166, 255, 0.05);
+            border-radius: 0 8px 8px 0;
+            color: var(--text-muted);
+        }
+        .article-body blockquote p { margin: 4px 0; }
+
+        /* ── 高亮卡 ── */
+        .highlight-box {
+            background: var(--card); border: 1px solid var(--border);
+            border-radius: 10px; padding: 20px 24px; margin: 24px 0;
+        }
+        .highlight-box h3 { margin-top: 0; }
+
+        /* ── 分隔线 ── */
+        .article-body hr { border: none; border-top: 1px solid var(--border); margin: 36px 0; }
+
+        /* ── 标签 ── */
+        .tag-row { display: flex; gap: 8px; flex-wrap: wrap; margin: 24px 0; }
+        .tag {
+            background: var(--tag-bg); color: var(--accent);
+            padding: 4px 12px; border-radius: 20px; font-size: 0.82em;
+        }
+
+        /* ── 作者卡片 ── */
+        .author-card {
+            background: var(--card); border: 1px solid var(--border);
+            border-radius: 12px; padding: 28px; margin: 48px 0 32px;
+            text-align: center;
+        }
+        .author-card .avatar {
+            width: 64px; height: 64px; border-radius: 50%;
+            background: linear-gradient(135deg, var(--accent), #a371f7);
+            margin: 0 auto 12px; display: flex; align-items: center; justify-content: center;
+            font-size: 1.6em;
+        }
+        .author-card h3 { color: var(--heading); margin-bottom: 4px; }
+        .author-card .bio { color: var(--text-muted); font-size: 0.9em; margin: 8px 0; }
+        .author-card .slogan { color: var(--accent2); font-size: 0.9em; font-weight: 600; margin: 8px 0; }
+        .author-card .qr-hint { color: var(--text-muted); font-size: 0.82em; margin-top: 12px; }
+
+        /* ── 推荐区 ── */
+        .recommend { margin: 40px 0; }
+        .recommend h3 { color: var(--heading); margin-bottom: 16px; }
+        .recommend .rec-item {
+            display: block; color: var(--accent); text-decoration: none;
+            padding: 10px 0; border-bottom: 1px solid var(--border);
+            font-size: 0.95em;
+        }
+        .recommend .rec-item:hover { color: var(--text); }
+
+        /* ── 广告位 ── */
+        .ad-placeholder {
+            background: var(--card); border: 2px dashed var(--border);
+            border-radius: 12px; text-align: center; padding: 30px;
+            margin: 32px 0; color: var(--text-muted); font-size: 0.85em;
+        }
+
+        /* ── 页脚 ── */
+        footer {
+            text-align: center; padding: 32px 20px;
+            color: var(--text-muted); font-size: 0.82em;
+            border-top: 1px solid var(--border); margin-top: 48px;
+        }
+        footer a { color: var(--accent); text-decoration: none; }
+
+        /* ── 响应式 ── */
+        @media (max-width: 640px) {
+            .article-header h1 { font-size: 1.4em; }
+            .article-body { font-size: 15px; }
+            .article-body pre { font-size: 0.78em; padding: 12px; }
+            .nav-links { display: none; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- ─── 导航 ─── -->
+<nav class="navbar">
+    <div class="nav-inner">
+        <a href="#" class="nav-logo">技能推荐</a>
+        <div class="nav-links">
+            <a href="#">首页</a>
+            <a href="#">AI 工具</a>
+            <a href="#">教程</a>
+            <a href="#">一人公司</a>
+            <a href="#">关于</a>
+        </div>
+    </div>
+</nav>
+
+<div class="container">
+
+<!-- ─── 文章头部 ─── -->
+<header class="article-header">
+    <h1>Claude Code 十个常用 Skill 推荐<br>（含各职业最佳 Skill）</h1>
+    <div class="article-meta">
+        <span>Claude Code 中文指南</span>
+        <span>2026-05-26</span>
+        <span>约 5,200 字</span>
+        <span>阅读 8 分钟</span>
+    </div>
+</header>
+
+<!-- ─── 特色图 ─── -->
+<div class="featured-img">—— 特色图片位：上线后替换为封面图 ——</div>
+
+<!-- ─── 广告位 1 ── -->
+<div class="ad-placeholder">—— 广告位：上线后替换为 Google AdSense 代码 ——</div>
+
+<!-- ═══════════ 正文开始 ═══════════ -->
+<div class="article-body">
+
+<p>我第一次用 Claude Code 的时候，以为这东西已经很聪明了——不就是个自带终端权限的 AI 编程助手吗？我只要把需求说清楚，它就能帮我干活。</p>
+
+<p>干了两周，我发现不对。<strong>有三个问题反复出现，怎么调模型都解决不了。</strong></p>
+
+<h2>三个问题：Token 浪费、跳步、专业感缺失</h2>
+
+<h3>第一个问题：Token 烧得跟不要钱似的</h3>
+
+<p>我让它帮我写一份技术文档，要求排版整齐、层级分明、带页码和目录。它写完我一看，格式全对，但每个标题都是手动敲的空格对齐，文档结构用的是"一、""二、"而不是自动编号，目录那一页的数字跟正文对不上。</p>
+
+<p>我问它为什么不直接用 Word 的自动目录功能？</p>
+
+<p>它说：抱歉，我没有读取文档格式的能力，所有的格式判断都基于纯文本。</p>
+
+<p>这一来一回重改了三轮，全是折腾一些没必要消耗 Token 的废话，<strong>最后那份八千字的文档烧掉我五十万 Token——三分之一是格式调整。</strong></p>
+
+<h3>第二个问题：遇到复杂任务就跳步</h3>
+
+<p>我让它拆解一个老项目的核心模块重构成可复用服务。它看了几眼仓库，直接开始写代码——没问我要留什么接口、没确认过数据库兼容、没见过一次测试。</p>
+
+<p>我赶紧叫停，让它先出个方案。方案倒是出了，但三行字就敷衍过去。最后我自己把执行过程拆成七个步骤，它才一步步老实做完。</p>
+
+<h3>第三个问题：在专业领域像个实习生</h3>
+
+<p>我让它帮我设计一个 SaaS 仪表盘。它写的代码逻辑全对，功能也能跑。但界面惨不忍睹——默认的 Inter 字体、蓝白灰的卡片、列表间距全一样，看起来像 GitHub 上随手一翻就能找到的"AI 风格"产物。</p>
+
+<p>这三个问题其实都指向同一个根源：<strong>Claude Code 裸用的时候是一个全能但粗糙的通用工具，它缺乏领域知识、缺乏工作流的纪律性、缺乏对专业质量的判断力。</strong></p>
+
+<p>而那些真正的重度用户、那些能在生产环境里稳定出活的团队，其实早就在用一套东西把那个"粗糙"给治了——<strong>它就是 Skills。</strong></p>
+
+<hr>
+
+<h2>Skills 不是高级 Prompt，它是一个内置了工作流、参考文件和可执行脚本的文件夹</h2>
+
+<p>先讲清楚定义，因为误解这个定义的人比不会用 Skills 的人还多。</p>
+
+<p>Anthropic 的官方工程师说过一句很直白的话：<strong>Skills 是一个常见的误解，大家以为它们只是 Markdown 文件。</strong></p>
+
+<p>真正的 Skill 是一个文件夹，里面装着四样东西。一个标准的 Skill 文件夹结构长这样：</p>
+
+<pre><code>my-skill/
+├── SKILL.md        # 必须：元数据 + 核心执行指令
+├── scripts/        # 可选：可被直接调用的 Python/Bash 脚本
+├── references/     # 可选：补充规则、格式标准、API 签名
+└── assets/         # 可选：模板、样例数据、品牌色板</code></pre>
+
+<p>这四样东西各自解决一个 Agent 真实干活时的具体痛点。<strong>SKILL.md 是指挥中心，脚本是动手能力，参考文件是随时可查的资料库，模板是每次产出的标准答案。</strong></p>
+
+<p>这就直接回答了刚才说的第一个问题。当你装了 Anthropic 官方的 docx Skill 之后，它读到的不再是"假设一个 Word 文档该怎么写"，而是一个由专业文档引擎支撑的执行逻辑——它能直接调用操作 OOXML 的格式指令，生成真正的自动目录、分页符和样式套用。这就是"从纯文本猜测"到"具备真实格式控制能力"的区别。</p>
+
+<h3>渐进式披露：装了 50 个 Skill 也只占约 5000 Token</h3>
+
+<p>传统 Agent 工作流是把所有工具说明书一次性塞进上下文——<strong>开发者实测 7 个 MCP 服务器就能在上下文里塞 9.87 万个 Token，</strong>模型还没干活，五分之一的 Token 预算已经租给了工具说明书。</p>
+
+<p>而 Skills 的渐进式披露完全逆转了这个逻辑：Agent 启动时只加载每个 Skill 的 name 和 description（约 100 Token/个），相当于只拿了一份目录；当任务匹配到某个 Skill 的描述后，才加载 SKILL.md 正文（推荐控制在 5000 Token 以内）；正文里引用的外部资源只在 Agent 实际执行到对应步骤时才被调用。</p>
+
+<blockquote><p><strong>装了 50 个 Skill 也只在启动时占约 5000 Token，</strong>而不是 50 本手册同时摊开在上下文里等着被一页一页翻。这就是为什么装了 Skill 之后大家会感觉 AI"变聪明了"——不是模型进化了，是上下文富裕了。</p></blockquote>
+
+<h3>Skills 和 MCP 的关系：不是竞争，是分工</h3>
+
+<p>Skills 和 MCP（Model Context Protocol）不是竞争关系。它们分工完全不同。<strong>MCP 解决的是"我能调什么工具"，Skills 解决的是"怎么把这个工具用对"。</strong>Anthropic 的工程师用一个很形象的比喻——MCP 是飞行员，Skills 是副驾驶。你不会因为副驾驶认识路，就把飞行员炒掉。</p>
+
+<hr>
+
+<h2>你一定要学会的三条命令：add、check、update</h2>
+
+<p>Skills 的所有操作都通过一个叫 <code>skills</code> 的 CLI 工具完成，它由 Anthropic 官方维护，通过 npx 零安装调用。</p>
+
+<h3>安装一个 Skill</h3>
+<pre><code># 格式：npx skills add &lt;GitHub 仓库地址&gt; [--skill &lt;具体技能名&gt;] [选项]
+# 最常用：从 skills.sh 注册表安装
+npx skills add vercel-labs/agent-skills --skill frontend-design</code></pre>
+<p>这条命令会自动把 <code>frontend-design</code> 这个 Skill 下载到你的项目 <code>.claude/skills/</code> 目录下。</p>
+
+<p>如果想让一个 Skill 在所有项目里都能用，加上 <code>-g</code>（global）：</p>
+<pre><code>npx skills add vercel-labs/agent-skills --skill frontend-design -g</code></pre>
+
+<h3>查看 / 检查 / 更新</h3>
+<pre><code># 查看已安装的 Skill
+npx skills list -g
+
+# 检查是否有更新版本
+npx skills check
+
+# 一键升级所有可更新的 Skill
+npx skills update</code></pre>
+<p>建议每两到三周跑一次 <code>npx skills check</code>，Skills 生态更新频率很高，社区热门的 Skill 有时候一周就换个版本。</p>
+
+<h3>搜索 / 卸载</h3>
+<pre><code># 搜索 Skill（按安装量排序）
+npx skills find podcast
+
+# 卸载：直接删除本地 Skill 目录
+rm -rf .claude/skills/&lt;skill-name&gt;</code></pre>
+
+<hr>
+
+<h2>第一梯队：所有人必须装的生态基础设施（4 个 Skill）</h2>
+
+<p>不管你写代码还是写文章，做前端还是做数据分析，<strong>这四个 Skill 迟早会救你的命。</strong>前三个现在就应该装，第四个先放着，等你遇到第八个想装的 Skill 的时候再回来——你会谢谢自己。</p>
+
+<h3>1. superpowers —— 没有纪律的 Agent 是开不出工地的坦克</h3>
+
+<p>安装量：170K+ stars，Skills 生态里 GitHub 星标最高的项目之一。</p>
+
+<p>superpowers 是 Claude Code 核心贡献者 Jesse Vincent 的开源项目。它不给你任何新能力，而是<strong>给 Claude Code 套上一整套强制执行的工程门禁。</strong></p>
+
+<p>它提供 9 大子技能，覆盖从头脑风暴到审查合并的全工作流——brainstorming 在写代码前强制先做苏格拉底式追问，writing-plans 把复杂需求拆成 5-10 个可验证的原子步骤，executing-plans 严格按步骤逐条执行且每步验证，test-driven-development 强制先写会失败的测试再写代码。</p>
+
+<pre><code>npx skills add https://github.com/obra/superpowers</code></pre>
+
+<blockquote><p>注意：superpowers 是全流程门禁，微型任务（单文件改动、半小时能搞定的）关掉它，只留原生 Claude Code 更省 Token。</p></blockquote>
+
+<h3>2. find-skills —— 整个 Skills 生态的第一把钥匙</h3>
+
+<p>安装量：上线 4 天破 5.2 万，目前 Skills 生态安装量最高。</p>
+
+<p>find-skills 是这个生态里的"元技能"。你只需要对 Claude Code 说一句"帮我找个做浏览器自动化的 Skill"，它会自动搜索注册表、按安装量排序、把最优的几个列出来让你选、然后自动帮你装好。<strong>从"我需要一个某领域的 Skill"到"它已经在帮我干活"，缩短了 20 倍以上。</strong></p>
+
+<pre><code>npx skills add vercel-labs/skills --skill find-skills -g</code></pre>
+
+<h3>3. skill-creator —— 把你脑子的经验变成无限复用的资产</h3>
+
+<p>安装量：Anthropic 官方出品，Skills 生态里的"母机"。</p>
+
+<p>如果你不仅想消费别人的 Skill，还想把自己的经验沉淀下来，这个 Skill 就是你最值钱的资产。它引导你走完从捕捉需求到创建 SKILL.md 到测试用例到迭代优化的完整闭环，2026 年 3 月升级的 2.0 版本还加入了自动描述优化器。</p>
+
+<pre><code>npx skills add anthropics/skills --skill skill-creator -g</code></pre>
+
+<h3>4. claude-mem —— 真正具备"长期记忆"的数字大脑</h3>
+
+<p>当前状态：Claude Code 生态中最火的记忆增强插件，开发者社区实测好评如潮。</p>
+
+<p>长任务最怕一件事：你今天刚带 Claude 理顺了复杂的业务逻辑，明天新开会话它就变回了"最熟悉的陌生人"。claude-mem 通过 <strong>SQLite + 向量数据库</strong>，将你的项目决策、代码变动和技术讨论转化为可检索的知识库。你可以直接问它："上周重构支付模块时，我们最后决定的接口协议是什么？"——它会像一直在场的老搭档一样秒回你。</p>
+
+<pre><code>/plugin marketplace add thedotmack/claude-mem</code></pre>
+
+<hr>
+
+<!-- ─── 广告位 2 ── -->
+<div class="ad-placeholder">—— 广告位：上线后替换为 Google AdSense 代码 ——</div>
+
+<hr>
+
+<h2>第二梯队：文档与数据处理，所有职场人的共同底座</h2>
+
+<p>只要你工作中碰过 PDF、Excel、Word 三种文件中的任何一种，这个梯队就是你挡掉那些重复性手工搬运劳动的第一道墙。</p>
+
+<h3>5. pdf —— 让 AI 真正读懂 PDF 的内部表格和排版</h3>
+
+<p>传统 AI 在读取 PDF 时极其容易出幻觉——尤其是遇到表格或复杂排版。这个 Skill 内置了专业 PDF 解析逻辑，能从一份 300 页的年报里自动抽出指定财务表格，保存为结构化数据。</p>
+
+<pre><code>npx skills add anthropics/skills --skill pdf</code></pre>
+
+<h3>6. xlsx —— Excel 的全链路自动化处理</h3>
+
+<p>处理 <code>.xlsx</code>、<code>.xlsm</code>、<code>.csv</code>、<code>.tsv</code> 等表格文件——从读取修改到数据清洗到制作图表到格式化转换，全部原生支持。</p>
+
+<pre><code>npx skills add anthropics/skills --skill xlsx</code></pre>
+
+<h3>7. docx —— 生成的 Word 有自动目录和样式</h3>
+
+<p>正因为这个 Skill 的存在，文章开头那个"调整格式就烧掉数十万 Token"的问题才被彻底终结。它能生成自动目录、统一样式、页码自动对齐。</p>
+
+<pre><code>npx skills add anthropics/skills --skill docx</code></pre>
+
+<hr>
+
+<h2>第三梯队：设计风格与视觉规范，告别"AI 味道"</h2>
+
+<p>这个梯队解决的就是文章开头第三个问题——AI 写的界面跑得通但眼光一过就知道是人还是机器写的。</p>
+
+<h3>8. frontend-design —— 用"强势风格"打穿万年蓝白灰</h3>
+
+<p>安装量：skills.sh 排行榜前端大类第一。</p>
+
+<p>它不教你写代码，而是逼 AI 在写代码之前先定设计方向：你要的是极简、复古未来还是粗野主义？定好方向之后，它在这个基调的约束下逐组件执行——<strong>专门跟"默认蓝白卡、菜单全对称、按钮永远灰"的 AI 惯性对着干。</strong></p>
+
+<pre><code>npx skills add https://github.com/anthropics/skills --skill frontend-design</code></pre>
+
+<h3>9. web-design-guidelines —— 300 多条铁律</h3>
+
+<p>这个 Skill 不带任何风格决策，只做代码约束审查和专业交互规范——对比度合不合无障碍标准、响应式不同尺寸下组件是否叠合、按钮有无按压反馈。跟 frontend-design 放在一起用就是"一个有审美的上司"和"一个铁面无私的合规官"的组合。</p>
+
+<pre><code>npx skills add https://github.com/vercel-labs/agent-skills --skill web-design-guidelines</code></pre>
+
+<hr>
+
+<h2>第四梯队：后端与工程自动化，开发者的生产力飞轮</h2>
+
+<h3>10. gstack —— 23 个虚拟角色组成你一个人的工程团队</h3>
+
+<p>安装量：YC CEO Garry Tan 开源，60 天内产出 60 万行生产代码、其中 35% 是测试。</p>
+
+<p>Garry Tan 把二十年的工程管理经验压缩成了 23 个角色：产品经理帮你做需求澄清、技术评审画架构图、代码审查员逐行挑逻辑隐患、QA 在真实浏览器里点你的页面并看交互是否完整。<strong>AI 不需要更聪明，它需要的是在不同阶段戴上不同的注意力透镜。</strong></p>
+
+<pre><code>git clone https://github.com/garrytan/gstack ~/.claude/skills/gstack
+cd ~/.claude/skills/gstack && chmod +x setup && ./setup</code></pre>
+
+<h3>11. agent-browser —— 让 AI 拥有视觉，而不只是读代码</h3>
+
+<p>安装量：浏览器自动化赛道安装量最高。AI 不再只能分析你的代码——它可以直接打开无头浏览器，真的去点击你的页面按钮、填写表单、做页面抓取。是前端的自动化回归与终端测试中最被低估的基础设施。</p>
+
+<pre><code>npx skills add anthropics/skills --skill agent-browser</code></pre>
+
+<hr>
+
+<h2>第五梯队：发布、运维与持续监控</h2>
+
+<p><code>/land-and-deploy</code> 自动合并分支、跑全部前置检查、打 PR 描述、部署，一气呵成；<code>/make-pdf</code> 则把你在 Claude Code 里产出的架构图、milestone 进度或研发文档一键转换成可以分发的最终交付文档。</p>
+
+<blockquote><p>记住一个底层原则：<strong>评判某个 Skill 是否值得安装，就看它是否能替代你日常重复执行的一套定型动作。</strong>如果这类动作每周出现两次以上，它被固化进 Skill 的直接收益远超新增的 Token 开销。</p></blockquote>
+
+<hr>
+
+<h2>按角色定制：不同职业的 Skills 安装方案</h2>
+
+<div class="highlight-box">
+<h3>前端开发</h3>
+<p>核心痛点：代码长得太像 AI 写的、没有交互规范、适配在一种屏幕下完美但换尺寸就崩坏。</p>
+<p><strong>必装核心 5 件套：</strong>frontend-design、web-design-guidelines、agent-browser、qa（gstack 内建命令）、gstack（核心全栈审查链）。</p>
+</div>
+
+<div class="highlight-box">
+<h3>后端开发</h3>
+<p>核心痛点：错误处理漏项、并发安全没有强制回归、API 设计缺乏标准化约束。</p>
+<p><strong>必装核心 5 件套：</strong>superpowers、gstack（工程评审器、代码审查员和安全官三个角色都必须跑）、claude-mem、docx、data-analysis。</p>
+</div>
+
+<div class="highlight-box">
+<h3>全栈开发</h3>
+<p>核心痛点：模块边界模糊、前后端数据契约缺少强制约束。</p>
+<p><strong>配置方案：</strong>前端 + 后端核心组合的交集，加上 claude-mem 维持跨上下文一致性，再加上 gstack 的工程评审器做全栈架构评审。</p>
+</div>
+
+<div class="highlight-box">
+<h3>一人公司创始人</h3>
+<p>核心痛点：你是唯一的技术与产品负责人，没人替你想战略、做测试、做安全审计。</p>
+<p><strong>必装 Skill 清单：</strong>superpowers、gstack（重点跑 CEO 审查和安全审计角色）、claude-mem、excalidraw-diagram、data-analysis、agent-browser。</p>
+</div>
+
+<div class="highlight-box">
+<h3>数据分析师</h3>
+<p>核心痛点：数据全是散乱的原始材料，分析流程没被标准化过。</p>
+<p><strong>必装 Skill 清单：</strong>data-analysis、xlsx、pdf、agent-browser、superpowers。</p>
+</div>
+
+<div class="highlight-box">
+<h3>产品经理 / 技术写作</h3>
+<p>核心痛点：产出质量波动大，竞品信息搜集全靠手工。</p>
+<p><strong>必装 Skill 清单：</strong>docx、pdf、excalidraw-diagram、brainstorming（superpowers）、agent-browser、frontend-design。</p>
+</div>
+
+<div class="highlight-box">
+<h3>DevOps / 安全工程师</h3>
+<p>核心痛点：部署链条断在没人盯的边缘环境上。</p>
+<p><strong>必装 Skill 清单：</strong>gstack（部署与安全角色）、superpowers、agent-browser。</p>
+</div>
+
+<div class="highlight-box">
+<h3>在校学生 / 自学编程新手</h3>
+<p>核心痛点：没有工程习惯，写的代码全是"能跑就行"，学不到规范。</p>
+<p><strong>必装 Skill 清单：</strong>superpowers、data-analysis、find-skills。</p>
+</div>
+
+<hr>
+
+<h2>避开这些坑，Skills 就能用到退休</h2>
+
+<h3>坑一：安装越多不代表生产力越高</h3>
+<p>Anthropic 官方自身的建议是持有 20 到 30 个 Skill。实测下来，<strong>日常高频触发的 Skill 往往只有 5 到 7 个</strong>——其余的存在意义是为特殊项目准备的备弹，而非每周必用的默认装备。</p>
+
+<h3>坑二：安装后找不到 Skill</h3>
+<p>你敲了 <code>npx skills add</code>，但 Claude Code 里怎么都叫不出这个 Skill。这是所有新手 100% 会踩的坑。原因是你把 Skill 装到了 <code>.agents/skills/</code> 目录下，但 Claude Code 只识别 <code>.claude/skills/</code>。</p>
+
+<h3>坑三：安装社区来路不明的 Skill 时不做背调</h3>
+<p>基本安全底线就三条：<strong>优先选择高安装量官方源；安装前检查仓库星标数和最后更新时间；不下载不明个人源文件。</strong></p>
+
+<h3>坑四：装了 Skill 就跑，不更新</h3>
+<p><code>npx skills check</code> 每两到三周做一次，发现标记了版本过期且已由官方或大社区接手维护的，用 <code>npx skills update</code> 一口气搞定。</p>
+
+<h3>坑五：Skill 装了但不用，占着上下文预算吃干饭</h3>
+<p>每季度批量做一次 Audit——哪些 Skill 过去三个月 0 触发？直接删，或者移到 <code>~/.claude/skills-archive/</code> 里备用。</p>
+
+<hr>
+
+<h2>写在最后</h2>
+
+<p>去年我第一次接触 Skills 时的状态，跟你现在可能的状态一样——不知道从哪下手，不知道哪个该装，不知道装完是真变强还是在吃 Token。</p>
+
+<p>如果你只想记住三件事：</p>
+<ol>
+<li><strong>裸用 Claude Code 的时候赶紧找 superpowers</strong> 替你在门口问清楚那几个该回答的问题</li>
+<li><strong>用 find-skills</strong> 能让你不至于在茫茫 Skill 海和排着队的"AI 专家推荐文"里扒拉一个晚上</li>
+<li><strong>Skill 不在于多，</strong>在于能在你每周重复两次以上的工作流里替你默默接住那些永远不变的琐碎</li>
+</ol>
+
+<p>当某个专业接口总有专业的执行脚本在背后扛着的时候，你就不会再把 Token 烧在调整文本对齐上——<strong>你会把注意力全部放回真正的产出内容。</strong>这才是 Skills 体系最核心的价值。</p>
+
+</div>
+<!-- ═══════════ 正文结束 ═══════════ -->
+
+<!-- ─── 标签 ─── -->
+<div class="tag-row">
+    <span class="tag">Claude Code</span>
+    <span class="tag">Skills</span>
+    <span class="tag">AI 编程</span>
+    <span class="tag">效率工具</span>
+    <span class="tag">教程</span>
+    <span class="tag">干货</span>
+</div>
+
+<!-- ─── 广告位 3 ── -->
+<div class="ad-placeholder">—— 广告位：上线后替换为 Google AdSense 代码 ——</div>
+
+<!-- ─── 作者卡片 ─── -->
+<div class="author-card">
+    <div class="avatar">📝</div>
+    <h3>关于本文</h3>
+    <p class="bio">本文系统整理了 Claude Code Skills 生态中最实用的 11 个 Skill<br>涵盖前端、后端、全栈、数据分析、产品经理等各职业的最佳安装方案</p>
+    <p class="qr-hint">💡 建议收藏，定期回看更新</p>
+</div>
+
+<!-- ─── 推荐阅读 ─── -->
+<div class="recommend">
+    <h3>往期推荐</h3>
+    <a href="#" class="rec-item">世界模型：为什么大厂不再只卷 LLM，开始卷"世界"了？</a>
+    <a href="#" class="rec-item">还没用过 Claude Code？先看看他的创始人 Boris 的十条使用技巧</a>
+    <a href="#" class="rec-item">AI 一人公司创业指南：哪些方向真有戏，哪些坑已经在埋人了</a>
+    <a href="#" class="rec-item">Karpathy 的 LLM Wiki，可能是 2026 年最被误读的一个破玩意儿</a>
+    <a href="#" class="rec-item">AI 正在长出"技能系统"：从 MCP 到 Skills，协议战争的下一站在哪</a>
+</div>
+
+</div>
+<!-- /container -->
+
+<footer>
+    <p>© 2026 AI 前沿速递 | 关注 AI，每天进步一点点</p>
+</footer>
+
+</body>
+</html>
