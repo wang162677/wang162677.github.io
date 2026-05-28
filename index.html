@@ -3,22 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="keywords" content="AI,人工智能,大模型,GPT-5,Claude,DeepSeek,AI工具,AI教程,AI资讯">
+    <meta name="keywords" content="AI,人工智能,大模型,GPT,Claude,DeepSeek,AI工具,AI教程,AI资讯,AI Agent">
     <meta name="description" content="AI 前沿速递 —— 追踪 2026 年人工智能最新动态，解读大模型热点，分享 AI 工具教程与实战技巧。">
     <title>AI 前沿速递 | 大模型热点 · AI 工具教程 · 人工智能资讯</title>
     <style>
         :root {
-            --bg: #0d1117;
-            --card: #161b22;
-            --border: #21262d;
-            --text: #c9d1d9;
-            --muted: #8b949e;
-            --cyan: #00e5ff;
-            --purple: #bb86fc;
-            --orange: #f78166;
-            --green: #3fb950;
-            --red: #ff1744;
-            --heading: #f0f6fc;
+            --bg: #0d1117; --card: #161b22; --border: #21262d;
+            --text: #c9d1d9; --muted: #8b949e; --cyan: #00e5ff;
+            --purple: #bb86fc; --orange: #f78166; --green: #3fb950;
+            --red: #ff1744; --heading: #f0f6fc;
         }
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
@@ -32,16 +25,34 @@
             text-align: center; padding: 50px 20px 40px;
             border-bottom: 2px solid var(--cyan);
         }
-        header.hero .logo { font-size: 2.2em; font-weight: bold; color: var(--cyan); letter-spacing: 4px; }
-        header.hero .slogan { color: var(--muted); font-size: 0.95em; margin-top: 6px; }
+        .logo { font-size: 2.2em; font-weight: bold; color: var(--cyan); letter-spacing: 4px; }
+        .slogan { color: var(--muted); font-size: 0.95em; margin-top: 6px; }
 
+        /* ── 导航 + 搜索 ── */
         nav {
-            background: var(--card); padding: 12px 0; text-align: center;
+            background: var(--card); padding: 10px 20px; text-align: center;
             border-bottom: 1px solid var(--border); position: sticky; top: 0; z-index: 100;
+            display: flex; align-items: center; justify-content: center; gap: 16px;
+            flex-wrap: wrap;
         }
-        nav a { color: var(--cyan); text-decoration: none; margin: 0 16px; font-size: 0.92em; }
-        nav a:hover { color: #fff; }
+        nav .nav-links { display: flex; gap: 14px; flex-wrap: wrap; }
+        nav .nav-links a {
+            color: var(--muted); text-decoration: none; font-size: 0.9em; cursor: pointer;
+            padding: 4px 0; border-bottom: 2px solid transparent; transition: all 0.2s;
+        }
+        nav .nav-links a:hover, nav .nav-links a.active { color: var(--cyan); border-bottom-color: var(--cyan); }
+        .search-box {
+            display: flex; align-items: center; background: var(--bg);
+            border: 1px solid var(--border); border-radius: 20px; padding: 6px 14px;
+        }
+        .search-box input {
+            background: none; border: none; color: var(--text); outline: none;
+            font-size: 0.9em; width: 160px;
+        }
+        .search-box input::placeholder { color: var(--muted); }
+        .search-icon { color: var(--muted); margin-right: 6px; }
 
+        /* ── 横幅 ── */
         .banner {
             background: linear-gradient(135deg, #161b22, #1a2332);
             border: 1px solid var(--border); border-radius: 14px;
@@ -56,28 +67,63 @@
             margin: 24px 0; color: #555; font-size: 0.85em;
         }
 
+        /* ── 无结果 ── */
+        .no-results {
+            text-align: center; padding: 40px; color: var(--muted); display: none;
+        }
+        .no-results.show { display: block; }
+
+        /* ── 卡片 ── */
         .card {
             background: var(--card); border: 1px solid var(--border);
             border-radius: 12px; padding: 24px 26px; margin: 18px 0;
-            transition: border-color 0.2s;
+            cursor: pointer; transition: border-color 0.2s, transform 0.15s;
         }
-        .card:hover { border-color: #444; }
+        .card:hover { border-color: #444; transform: translateY(-1px); }
         .card h2 {
             color: var(--heading); font-size: 1.25em; margin: 8px 0;
             border-left: 3px solid var(--purple); padding-left: 12px;
         }
-        .card .meta { color: var(--muted); font-size: 0.8em; margin-bottom: 8px; }
-        .card p { color: var(--text); font-size: 0.94em; margin-bottom: 8px; }
+        .card .meta { color: var(--muted); font-size: 0.8em; margin-bottom: 8px; display: flex; gap: 12px; flex-wrap: wrap; }
+        .card .summary { color: var(--text); font-size: 0.94em; margin-bottom: 8px; }
+        .card .read-more { color: var(--cyan); font-size: 0.85em; margin-top: 4px; }
         .tag {
             display: inline-block; background: #1e1e3e; color: var(--purple);
             padding: 2px 10px; border-radius: 4px; font-size: 0.78em; margin-right: 6px;
         }
-        .badge {
-            color: #fff; font-size: 0.7em; padding: 2px 8px; border-radius: 3px;
-            margin-left: 6px; vertical-align: middle;
-        }
+        .badge { color: #fff; font-size: 0.7em; padding: 2px 8px; border-radius: 3px; margin-left: 6px; vertical-align: middle; }
         .badge-hot { background: var(--red); }
         .badge-new { background: var(--green); }
+
+        /* ── 搜索结果高亮 ── */
+        .card.hidden { display: none; }
+
+        /* ── 模态框 ── */
+        .modal-overlay {
+            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.85); z-index: 999; overflow-y: auto;
+        }
+        .modal-overlay.show { display: block; }
+        .modal {
+            background: var(--card); border: 1px solid var(--border); border-radius: 14px;
+            max-width: 800px; margin: 40px auto; padding: 36px 32px; position: relative;
+        }
+        .modal .close-btn {
+            position: absolute; top: 16px; right: 20px;
+            background: none; border: none; color: var(--muted); font-size: 1.8em;
+            cursor: pointer; line-height: 1;
+        }
+        .modal .close-btn:hover { color: #fff; }
+        .modal h2 { color: var(--heading); font-size: 1.5em; margin-bottom: 12px; }
+        .modal .meta { color: var(--muted); font-size: 0.85em; margin-bottom: 24px; }
+        .modal .article-body h3 { color: var(--cyan); font-size: 1.15em; margin: 28px 0 10px; }
+        .modal .article-body p { margin: 12px 0; font-size: 0.98em; }
+        .modal .article-body ul { margin: 10px 0 10px 20px; }
+        .modal .article-body li { margin: 6px 0; }
+        .modal .article-body blockquote {
+            border-left: 3px solid var(--cyan); padding: 10px 18px; margin: 16px 0;
+            background: rgba(0, 229, 255, 0.04); border-radius: 0 8px 8px 0; color: var(--muted);
+        }
 
         footer {
             text-align: center; padding: 28px 20px; color: var(--muted);
@@ -85,10 +131,22 @@
         }
 
         @media (max-width: 640px) {
-            header.hero .logo { font-size: 1.5em; }
-            .card h2 { font-size: 1.1em; }
-            nav a { margin: 0 10px; font-size: 0.82em; }
+            .logo { font-size: 1.5em; }
+            nav { padding: 10px; gap: 10px; }
+            nav .nav-links a { font-size: 0.78em; margin: 0 6px; }
+            .search-box input { width: 120px; }
+            .modal { margin: 20px 10px; padding: 24px 18px; }
         }
+
+        /* ── 回到顶部 ── */
+        .back-top {
+            position: fixed; bottom: 30px; right: 30px;
+            background: var(--card); border: 1px solid var(--border);
+            color: var(--cyan); width: 40px; height: 40px; border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            cursor: pointer; font-size: 1.2em; z-index: 50; display: none;
+        }
+        .back-top.visible { display: flex; }
     </style>
     <script>
         var _hmt = _hmt || [];
@@ -108,12 +166,18 @@
 </header>
 
 <nav>
-    <a href="#">首页</a>
-    <a href="#">大模型</a>
-    <a href="#">AI 工具</a>
-    <a href="#">AI Agent</a>
-    <a href="#">教程</a>
-    <a href="#">行业</a>
+    <div class="nav-links">
+        <a class="active" data-filter="all">全部</a>
+        <a data-filter="大模型">大模型</a>
+        <a data-filter="AI工具">AI 工具</a>
+        <a data-filter="AI Agent">AI Agent</a>
+        <a data-filter="行业">行业</a>
+        <a data-filter="教程">教程</a>
+    </div>
+    <div class="search-box">
+        <span class="search-icon">🔍</span>
+        <input type="text" id="searchInput" placeholder="搜索文章...">
+    </div>
 </nav>
 
 <div class="container">
@@ -124,100 +188,229 @@
 <!-- 头条 -->
 <div class="banner">
     <h2>2026 年 5 月 AI 十大热点：从 Agent 落地到万亿美元估值</h2>
-    <p>GPT-5.5 发布 · Claude 首次盈利 · DeepSeek V4 开源 · Google Gemini Omni 多模态统一 · AI 支出预测达 4.7 万亿美元</p>
+    <p>GPT-5.5 发布 · Anthropic 首次盈利 · DeepSeek V4 开源 · Google Gemini Omni 统一多模态 · AI 支出预测达 4.7 万亿美元</p>
 </div>
 
-<!-- 文章 1 -->
-<div class="card">
+<!-- 无结果提示 -->
+<div class="no-results" id="noResults">
+    <p>没有找到匹配的文章，试试其他关键词</p>
+</div>
+
+<!-- ═══ 文章卡片 ═══ -->
+
+<!-- 1 -->
+<article class="card" data-id="1" data-tags="大模型 OpenAI" data-title="GPT-5.5 系列发布">
     <span class="tag">大模型</span><span class="tag">OpenAI</span><span class="badge badge-hot">HOT</span>
     <h2>GPT-5.5 系列发布：幻觉率暴降 52%，网络安全专用模型同步上线</h2>
-    <div class="meta">2026-05-28 · 阅读 18,600 · 评论 142</div>
-    <p>OpenAI 在 5 月连发 GPT-5.5 Instant（默认模型）和 GPT-5.5-Cyber（网络安全专用模型）。其中 Instant 幻觉率较上一代下降 52.5%；Cyber 面向全球安全机构开放，首次将大模型用于国家级网络防护。另有消息称 GPT-5.6 已泄露，上下文窗口高达 150 万 Token，预计 6 月发布。</p>
-</div>
+    <div class="meta"><span>2026-05-28</span><span>阅读 18,600</span><span>评论 142</span></div>
+    <p class="summary">OpenAI 在 5 月连发 GPT-5.5 Instant 和 GPT-5.5-Cyber，前者幻觉率较上一代下降 52.5%，后者面向全球安全机构开放。另有消息称 GPT-5.6 已泄露，上下文窗口高达 150 万 Token。</p>
+    <p class="read-more">点击阅读全文 →</p>
+</article>
 
-<!-- 文章 2 -->
-<div class="card">
+<!-- 2 -->
+<article class="card" data-id="2" data-tags="Anthropic 里程碑" data-title="Anthropic 首次实现季度盈利">
     <span class="tag">Anthropic</span><span class="tag">里程碑</span><span class="badge badge-hot">HOT</span>
     <h2>Anthropic 首次实现季度盈利，Claude 推出「永久大脑」记忆系统</h2>
-    <div class="meta">2026-05-27 · 阅读 15,200 · 评论 198</div>
-    <p>Anthropic 在 Q1 首次实现运营盈利，ARR 突破 440 亿美元。同期推出 Claude Memory「永久大脑」功能——基于文件系统的结构化记忆，甚至引入模拟「梦境」的记忆整合机制。私募市场隐含估值一度触及万亿美元。AI 行业正从「烧钱换规模」转入「技术变现」新阶段。</p>
-</div>
+    <div class="meta"><span>2026-05-27</span><span>阅读 15,200</span><span>评论 198</span></div>
+    <p class="summary">Anthropic Q1 首次实现运营盈利，ARR 突破 440 亿美元。同期推出 Claude Memory「永久大脑」功能，引入模拟「梦境」的记忆整合机制。私募市场隐含估值一度触及万亿美元。</p>
+    <p class="read-more">点击阅读全文 →</p>
+</article>
 
-<!-- 文章 3 -->
-<div class="card">
+<!-- 3 -->
+<article class="card" data-id="3" data-tags="国产大模型 开源" data-title="DeepSeek V4 开源">
     <span class="tag">国产大模型</span><span class="tag">开源</span><span class="badge badge-new">NEW</span>
     <h2>DeepSeek V4 开源：国产模型首次在编程 Agent 任务上追平 GPT-5</h2>
-    <div class="meta">2026-05-25 · 阅读 22,400 · 评论 356</div>
-    <p>5 月 12 天内，四家中国实验室连发开源编程模型——智谱 GLM-5.1、MiniMax M2.7、Kimi K2.6、DeepSeek V4。其中 DeepSeek V4 的 Agent 编程能力已追平 Claude Opus 4.7，成本仅为其三分之一。在最具经济价值的 AI 能力赛道上，最优秀的几个模型现在是中国的、开源的。</p>
-</div>
+    <div class="meta"><span>2026-05-25</span><span>阅读 22,400</span><span>评论 356</span></div>
+    <p class="summary">12 天内，四家中国实验室连发开源编程模型。DeepSeek V4 的 Agent 编程能力已追平 Claude Opus 4.7，成本仅为其三分之一。在最具经济价值的 AI 能力赛道上，最好的模型现在是中国的、开源的。</p>
+    <p class="read-more">点击阅读全文 →</p>
+</article>
 
 <!-- 广告位 2 -->
 <div class="ad-placeholder">—— 广告位：替换为 Google AdSense 代码 ——</div>
 
-<!-- 文章 4 -->
-<div class="card">
+<!-- 4 -->
+<article class="card" data-id="4" data-tags="Google 多模态" data-title="Google I/O 2026">
     <span class="tag">Google</span><span class="tag">多模态</span><span class="badge badge-hot">HOT</span>
     <h2>Google I/O 2026：Gemini Omni 统一多模态，AI 眼镜今秋发布</h2>
-    <div class="meta">2026-05-22 · 阅读 13,800 · 评论 117</div>
-    <p>Google 发布世界模型 Gemini Omni——任意模态输入、任意模态输出，号称能理解动能、重力等物理规律。同时推出 Gemini Spark（7×24 小时云端个人 AI 代理），并预告秋季发布首款 AI 眼镜。Google 正式宣告进入 Agent 时代。</p>
-</div>
+    <div class="meta"><span>2026-05-22</span><span>阅读 13,800</span><span>评论 117</span></div>
+    <p class="summary">Google 发布世界模型 Gemini Omni——任意模态输入、任意模态输出，号称能理解动能、重力等物理规律。同时推出 Gemini Spark（7×24 小时云端个人 AI 代理），秋季发布首款 AI 眼镜。</p>
+    <p class="read-more">点击阅读全文 →</p>
+</article>
 
-<!-- 文章 5 -->
-<div class="card">
+<!-- 5 -->
+<article class="card" data-id="5" data-tags="行业 微软" data-title="微软-OpenAI 合作重组">
     <span class="tag">行业格局</span><span class="tag">微软</span><span class="badge badge-new">NEW</span>
     <h2>微软-OpenAI 合作重组：独家协议终结，AI 多云时代来临</h2>
-    <div class="meta">2026-05-20 · 阅读 8,900 · 评论 85</div>
-    <p>微软与 OpenAI 重新谈判合作条款。OpenAI 现在可自由选择 Oracle、CoreWeave、AWS、Google Cloud 等多家云服务商，微软不再独享 OpenAI 算力订单。同时微软在 Azure Foundry 上架了所有前沿模型——包括 Anthropic Claude Opus 4.7。平台与实验室的独家绑定时代正式结束。</p>
-</div>
+    <div class="meta"><span>2026-05-20</span><span>阅读 8,900</span><span>评论 85</span></div>
+    <p class="summary">微软与 OpenAI 重新谈判合作条款。OpenAI 现在可自由选择多家云服务商，微软不再独享算力订单。同时微软在 Azure Foundry 上架了所有前沿模型——平台与实验室的独家绑定时代正式结束。</p>
+    <p class="read-more">点击阅读全文 →</p>
+</article>
 
-<!-- 文章 6 -->
-<div class="card">
+<!-- 6 -->
+<article class="card" data-id="6" data-tags="AI Agent 企业应用" data-title="AI Agent 全面落地">
     <span class="tag">AI Agent</span><span class="tag">企业应用</span>
     <h2>AI Agent 全面落地：74% 财富 500 强已部署，但对抗性市场仍翻车</h2>
-    <div class="meta">2026-05-18 · 阅读 9,700 · 评论 132</div>
-    <p>Anthropic 内部实验显示 Claude Opus 4.5 Agent 在模拟市场中系统性地碾压弱模型对手。但在英超博彩对抗测试中，所有前沿模型全部亏损——Agent 在封闭任务中表现出色，在对抗性、非稳态环境中仍然不可靠。Ramp 的采购 Agent 已实现削减供应商成本 16%、速度提升 3 倍，企业级边界场景正在快速落地。</p>
-</div>
+    <div class="meta"><span>2026-05-18</span><span>阅读 9,700</span><span>评论 132</span></div>
+    <p class="summary">Anthropic 实验显示 Claude Agent 在模拟市场碾压弱模型，但在英超博彩对抗测试中全部亏损。Ramp 采购 Agent 已实现降本 16%、提速 3 倍。Agent 在封闭任务中出色，对抗环境仍不可靠。</p>
+    <p class="read-more">点击阅读全文 →</p>
+</article>
 
-<!-- 文章 7 -->
-<div class="card">
+<!-- 7 -->
+<article class="card" data-id="7" data-tags="融资 资本" data-title="2026 年 AI 融资再破纪录">
     <span class="tag">融资</span><span class="tag">资本</span><span class="badge badge-hot">HOT</span>
-    <h2>2026 年 AI 融资再破纪录：OpenAI 估值 8520 亿，Gartner 预测行业支出将达 4.7 万亿</h2>
-    <div class="meta">2026-05-16 · 阅读 11,300 · 评论 201</div>
-    <p>OpenAI 完成 1220 亿美元融资，估值 8520 亿美元，创史上最大私募融资。Anthropic 获 Google 40 亿、Amazon 5 亿追加投资。Cursor 启动 20 亿+ 融资，估值超 500 亿。Gartner 最新预测：到 2029 年 AI 总支出将达 4.7 万亿美元，其中基础设施 2.3 万亿。字节跳动 2025 年净利润骤降 70%——钱全部投入了 AI。</p>
-</div>
+    <h2>2026 年 AI 融资再破纪录：OpenAI 估值 8520 亿，Gartner 预测 4.7 万亿支出</h2>
+    <div class="meta"><span>2026-05-16</span><span>阅读 11,300</span><span>评论 201</span></div>
+    <p class="summary">OpenAI 完成 1220 亿美元融资，估值 8520 亿美元，创史上最大私募融资。Anthropic 获 Google 40 亿追加。Cursor 估值超 500 亿。Gartner 预测到 2029 年 AI 总支出将达 4.7 万亿美元。</p>
+    <p class="read-more">点击阅读全文 →</p>
+</article>
 
 <!-- 广告位 3 -->
 <div class="ad-placeholder">—— 广告位：替换为 Google AdSense 代码 ——</div>
 
-<!-- 文章 8 -->
-<div class="card">
+<!-- 8 -->
+<article class="card" data-id="8" data-tags="AI安全 前沿" data-title="AI 网络攻击能力每四个月翻倍">
     <span class="tag">AI 安全</span><span class="tag">前沿</span><span class="badge badge-new">NEW</span>
     <h2>AI 网络攻击能力每四个月翻倍：Claude Mythos 首次自主完成企业网络渗透</h2>
-    <div class="meta">2026-05-14 · 阅读 14,500 · 评论 273</div>
-    <p>英国 AI 安全研究所（AISI）披露：Anthropic Claude Mythos Preview 成为首个自主完成企业网络全面渗透的模型——这项任务通常需要 20 小时人类红队操作。Mythos 在 10 次尝试中成功 3 次，专家任务成功率 73%。AISI 估计前沿 AI 网络攻击能力每 4 个月翻一倍。</p>
-</div>
+    <div class="meta"><span>2026-05-14</span><span>阅读 14,500</span><span>评论 273</span></div>
+    <p class="summary">英国 AISI 披露：Claude Mythos Preview 成为首个自主完成企业网络全面渗透的模型——通常需 20 小时人类红队操作。AISI 估计前沿 AI 网络攻击能力每 4 个月翻一倍。</p>
+    <p class="read-more">点击阅读全文 →</p>
+</article>
 
-<!-- 文章 9 -->
-<div class="card">
+<!-- 9 -->
+<article class="card" data-id="9" data-tags="AI工具 教程" data-title="Claude Code 完全指南 2026">
     <span class="tag">AI 编程</span><span class="tag">教程</span>
     <h2>Claude Code 完全指南 2026 版：Skills 生态 + Agent 工作流实战</h2>
-    <div class="meta">2026-05-12 · 阅读 25,800 · 评论 467</div>
-    <p>从 superpowers 工程门禁到 find-skills 元技能，从 gstack 23 角色开发团队到 claude-mem 长期记忆——本文系统梳理 Claude Code Skills 生态 11 个核心技能，覆盖前端、后端、全栈、数据分析、产品经理等各职业的最佳配置方案。附各职业推荐组合清单和 5 个常见避坑指南。</p>
-</div>
+    <div class="meta"><span>2026-05-12</span><span>阅读 25,800</span><span>评论 467</span></div>
+    <p class="summary">从 superpowers 工程门禁到 find-skills 元技能，从 gstack 23 角色开发团队到 claude-mem 长期记忆——系统梳理 Claude Code Skills 生态 11 个核心技能，附各职业推荐组合和避坑指南。</p>
+    <p class="read-more">点击阅读全文 →</p>
+</article>
 
-<!-- 文章 10 -->
-<div class="card">
+<!-- 10 -->
+<article class="card" data-id="10" data-tags="国内 算力" data-title="国内 AI 月活破 4.4 亿">
     <span class="tag">国内动态</span><span class="tag">算力</span>
     <h2>国内 AI 月活破 4.4 亿：豆包领跑，华为昇腾量产，宇树科创板 IPO</h2>
-    <div class="meta">2026-05-10 · 阅读 7,200 · 评论 89</div>
-    <p>国内 AI 原生 APP 月活达 4.4 亿，豆包（3.45 亿）、千问（1.66 亿）、DeepSeek（1.27 亿）位列前三。华为发布多款昇腾 AI 芯片并提出「韬定律」新路径。宇树科技科创板 IPO 6 月 1 日上会，拟募资 42 亿元。国家加快推进 AI 综合性立法。</p>
-</div>
+    <div class="meta"><span>2026-05-10</span><span>阅读 7,200</span><span>评论 89</span></div>
+    <p class="summary">国内 AI 原生 APP 月活达 4.4 亿，豆包（3.45 亿）、千问（1.66 亿）、DeepSeek（1.27 亿）前三。华为发布多款昇腾芯片。宇树科技科创板 IPO 6 月上会。国家加快推进 AI 综合性立法。</p>
+    <p class="read-more">点击阅读全文 →</p>
+</article>
 
 </div>
+
+<!-- ═══ 模态框 ═══ -->
+<div class="modal-overlay" id="modalOverlay">
+    <div class="modal" id="modalContent">
+        <button class="close-btn" id="closeModal">&times;</button>
+        <div id="modalInner"></div>
+    </div>
+</div>
+
+<div class="back-top" id="backTop" title="回到顶部">↑</div>
 
 <footer>
     <p>© 2026 AI 前沿速递 | 关注 AI，每天进步一点点</p>
 </footer>
+
+<script>
+// ═══ 文章全文数据 ═══
+var articles = {
+    1: { title: "GPT-5.5 系列发布：幻觉率暴降 52%，网络安全专用模型同步上线", date: "2026-05-28", tags: "大模型 · OpenAI", body: '<h3>一、GPT-5.5 Instant：默认模型全面升级</h3><p>5 月 6 日，OpenAI 发布 GPT-5.5 Instant，并将其设为 ChatGPT 的默认模型。核心提升：幻觉率较上一版本下降约 52.5%，推理速度提升 30%，API 调用成本下降 40%。这标志着 OpenAI 在「可靠性」这个长期被诟病的问题上取得了实质性突破。</p><h3>二、GPT-5.5-Cyber：AI 进入网络安全战场</h3><p>5 月 2 日发布的 GPT-5.5-Cyber 是全球首个面向网络安全机构的大规模专用模型。它能够实时分析网络流量异常、识别零日漏洞模式、辅助生成防御策略。OpenAI 将其开放给全球认证安全机构，首批合作方包括 CrowdStrike、Palo Alto Networks 和美国 CISA。</p><h3>三、GPT-5.6 泄露</h3><p>业内消息称 GPT-5.6 已进入内部测试阶段，上下文窗口高达 150 万 Token（约可一次处理 3000 页文档），预计 2026 年 6 月初正式发布。如果消息属实，这将再次刷新大模型上下文窗口的纪录。</p><blockquote>一句话总结：GPT-5.5 系列不只是「更强的模型」，而是 OpenAI 从通用对话向专业化、垂直化部署的关键一步。</blockquote>' },
+    2: { title: "Anthropic 首次实现季度盈利，Claude 推出「永久大脑」记忆系统", date: "2026-05-27", tags: "Anthropic · 里程碑", body: '<h3>一、从烧钱到赚钱的转折</h3><p>2026 年 Q1，Anthropic 首次实现季度运营盈利，这被业界视为 AI 行业从「资本驱动」转入「商业变现」的标志性事件。ARR（年化经常性收入）已突破 440 亿美元，Q1 收入从 90 亿美元年化跃升至 300 亿美元。</p><h3>二、Claude Memory「永久大脑」</h3><p>同期推出的 Claude Memory 是 Anthropic 在记忆机制上的重大创新：基于文件系统的永久结构化记忆，支持跨会话检索；引入模拟「梦境」的记忆整合机制——AI 在空闲时自动整理、关联碎片化记忆；用户可直接询问「上周我们讨论的那个支付接口方案是什么」。</p><h3>三、万亿美元估值</h3><p>私募二级市场对 Anthropic 的隐含估值一度触及万亿美元。Google 追加 40 亿、Amazon 追加 5 亿投资。加上 OpenAI 的 8520 亿估值，两家 AI 头部公司合计估值已超过全球绝大多数上市科技公司。</p><blockquote>一句话总结：Anthropic 用盈利证明 AI 不只是「烧钱黑洞」，同时用 Memory 功能重新定义了人机协作的长期关系。</blockquote>' },
+    3: { title: "DeepSeek V4 开源：国产模型首次在编程 Agent 任务上追平 GPT-5", date: "2026-05-25", tags: "国产大模型 · 开源", body: '<h3>一、12 天 4 连发的中国速度</h3><p>2026 年 5 月，四家中国 AI 实验室在短短 12 天内接连发布开源编程模型：智谱 GLM-5.1、MiniMax M2.7、月之暗面 Kimi K2.6、DeepSeek V4。这种密集发布节奏在全球 AI 史上绝无仅有。</p><h3>二、DeepSeek V4 的核心突破</h3><p>DeepSeek V4 在 Agentic Coding（智能体编程）基准测试中首次追平 Claude Opus 4.7 和 GPT-5，而 API 成本仅为前者的三分之一。它在以下场景表现尤为突出：多文件重构、端到端全栈应用生成、自动化测试编写。</p><h3>三、开源 vs 闭源的攻守逆转</h3><p>在最具经济价值的 AI 能力赛道——编程——上，几个最好的模型现在是中国的、开源的。西方科技媒体普遍用「the 6-month lag is dead」（六个月的差距已死）来形容这一变化。对开发者来说，这意味着高质量 AI 编程助手的成本将断崖式下降。</p><blockquote>一句话总结：DeepSeek V4 不只是技术突破，更是一张宣告「AI 编程民主化」的入场券。</blockquote>' },
+    4: { title: "Google I/O 2026：Gemini Omni 统一多模态，AI 眼镜今秋发布", date: "2026-05-22", tags: "Google · 多模态", body: '<h3>一、Gemini Omni：世界模型的野心</h3><p>Google 在 I/O 2026 上发布了 Gemini Omni，号称首个真正的「世界模型」——任意模态输入、任意模态输出，能理解动能、重力等物理规律。在一个演示中，Gemini Omni 仅凭一张桌上物品的照片，准确预测了哪些物体会在桌子倾斜时先滑落。</p><h3>二、Gemini Omni Flash：速度与能力的平衡</h3><p>同时发布的 Flash 版本主打低延迟，专为实时交互场景设计，在保持 Omni 核心能力的同时将响应时间压缩到毫秒级。</p><h3>三、Gemini Spark：你的 7×24 小时 AI 代理</h3><p>Google 正式推出 Gemini Spark——一个常驻云端的个人 AI 代理，可以替你处理邮件、安排日程、监控信息、预订服务，全天候运行。这标志着 Google 从「AI 助手」正式升级为「AI 代理」。</p><h3>四、AI 眼镜今秋见</h3><p>Google 预告将在 2026 年秋季推出首款 AI 眼镜，集成 Gemini Omni 的多模态能力，支持实时翻译、场景识别和 AR 导航。</p><blockquote>一句话总结：Google 用一个「世界模型 + AI 代理 + 硬件」的三件套，宣告全面进入 AI Agent 时代。</blockquote>' },
+    5: { title: "微软-OpenAI 合作重组：独家协议终结，AI 多云时代来临", date: "2026-05-20", tags: "行业格局 · 微软", body: '<h3>一、独家协议终结</h3><p>微软和 OpenAI 正式重组了双方的合作协议。核心变化：OpenAI 现在可以自由选择 Oracle、CoreWeave、AWS、Google Cloud 等多家云服务商，不再被绑定在 Azure 上。微软保留了 2032 年前的非独家 IP 许可和主要云合作伙伴地位。</p><h3>二、微软的反制：Azure Foundry</h3><p>与此同时，微软在 Azure Foundry 上架了所有主流前沿模型——包括 Anthropic Claude Opus 4.7、Google Gemini、Meta Llama 等。微软的策略很清晰：不再赌一家，而是做所有 AI 模型的「超市」。</p><h3>三、行业影响</h3><p>平台与实验室的「独家绑定」时代正式结束。对企业客户来说，这意味着更大的议价空间和更灵活的部署选择。对整个行业来说，AI 基础设施正在从「垂直整合」走向「水平分层」——每层（芯片、云、模型、应用）都有独立的最佳供应商。</p><blockquote>一句话总结：AI 行业的「婚姻」解体了，但这对所有人来说可能都是好事。</blockquote>' },
+    6: { title: "AI Agent 全面落地：74% 财富 500 强已部署，但对抗性市场仍翻车", date: "2026-05-18", tags: "AI Agent · 企业应用", body: '<h3>一、Claude Agent 的内部市场实验</h3><p>Anthropic 进行了一项名为 Project Deal 的内部实验：69 个 AI Agent 在模拟市场中交易了一周。结果令人震惊：Claude Opus 4.5 Agent 系统性地碾压了弱模型对手，而弱模型的主人完全没有意识到自己被「剥削」了。</p><h3>二、对抗性市场的翻车</h3><p>在 KellyBench（对抗性市场基准测试）中，所有前沿模型在博彩预测任务上全部亏损。即使是表现最好的 Claude Opus 4.6，复杂决策的准确率也只有 32.6%。Agent 在封闭、规则明确的企业场景中表现出色，但在开放、对抗性、非稳态环境中仍然非常脆弱。</p><h3>三、企业落地的真实成绩</h3><p>Ramp 的采购 Agent 已经实现了削减供应商成本 16%、采购流程速度提升 3 倍的实际效益。74% 的财富 500 强企业已经部署了某种形式的 AI Agent。落地最快的场景集中在：客服自动化、采购优化、代码审查、数据分析和报告生成。</p><blockquote>一句话总结：Agent 不是万能的，但在边界清晰的场景里，它已经在帮企业省真金白银。</blockquote>' },
+    7: { title: "2026 年 AI 融资再破纪录：OpenAI 估值 8520 亿，Gartner 预测 4.7 万亿支出", date: "2026-05-16", tags: "融资 · 资本", body: '<h3>一、史上最大私募融资</h3><p>OpenAI 完成 1220 亿美元新一轮融资，估值达 8520 亿美元，是全球史上最大的私募融资。Anthropic 同步获得 Google 40 亿美元和 Amazon 5 亿美元的追加投资，ARR 突破 440 亿美元。</p><h3>二、应用层也在爆发</h3><p>AI 编程工具 Cursor 正在谈判 20 亿美元以上的新一轮融资，估值超 500 亿美元，企业收入年化接近 60 亿美元。欧洲 AI 公司 Ineffable Intelligence 完成 11 亿美元种子轮，估值 51 亿美元，刷新欧洲种子轮纪录。</p><h3>三、Gartner 的 4.7 万亿美元预测</h3><p>Gartner 最新报告预测：到 2029 年，全球 AI 支出将达到 4.7 万亿美元，其中 AI 基础设施市场蕴含 2.3 万亿美元机遇。字节跳动 2025 年全年净利润同比骤降超 70%——原因只有一个：大举投入 AI 基础设施。</p><blockquote>一句话总结：AI 不是泡沫——至少从资本市场的真金白银来看，所有人都在押注它是未来十年最大的产业机会。</blockquote>' },
+    8: { title: "AI 网络攻击能力每四个月翻倍：Claude Mythos 首次自主完成企业网络渗透", date: "2026-05-14", tags: "AI 安全 · 前沿", body: '<h3>一、Mythos 的突破</h3><p>英国 AI 安全研究所（AISI）披露了一项令人警醒的测试结果：Anthropic 的 Claude Mythos Preview 成为首个自主完成企业网络全面渗透模拟的 AI 模型。这项名为「The Last Ones」的测试通常需要人类红队 20 小时的操作。Mythos 在 10 次尝试中成功了 3 次，专家级任务成功率达 73%。</p><h3>二、GPT-5.5 紧随其后</h3><p>仅仅三周后，OpenAI 的 GPT-5.5 在相同测试中以几乎相同的成绩通过。AISI 据此估计：前沿 AI 的网络攻击能力目前正以每 4 个月翻一倍的速度增长。</p><h3>三、完全不同的部署策略</h3><p>面对这一安全威胁，两家公司采取了截然不同的策略：Anthropic 通过 Project Glasswing 将 Mythos 严格限制在特定企业客户中使用；OpenAI 则将 GPT-5.5 向公众全面开放。这引发了 AI 安全社区关于「负责任发布」标准的激烈争论。</p><blockquote>一句话总结：AI 既是盾也是矛，而矛的进化速度正在超过所有人的预期。</blockquote>' },
+    9: { title: "Claude Code 完全指南 2026 版：Skills 生态 + Agent 工作流实战", date: "2026-05-12", tags: "AI 编程 · 教程", body: '<h3>一、为什么要装 Skills？</h3><p>裸用 Claude Code 有三大问题：Token 浪费在格式调整上、复杂任务跳步骤、产出有「AI 味」。Skills 解决的就是这些问题——它不是高级 Prompt，而是一个内置了工作流、脚本和参考文件的专业工具包。</p><h3>二、必装的 4 个基础设施 Skill</h3><p><strong>superpowers</strong>（170K+ stars）：工程门禁，强制 TDD 和原子任务拆分。<strong>find-skills</strong>：元技能，自动搜索和安装其他 Skill。<strong>skill-creator</strong>：Anthropic 官方出品，帮你封装自己的经验。<strong>claude-mem</strong>：SQLite + 向量数据库实现长期记忆。</p><h3>三、按职业推荐</h3><p>前端开发：frontend-design + web-design-guidelines + agent-browser<br>后端开发：superpowers + gstack + claude-mem<br>一人公司：superpowers + gstack(CEO审查) + data-analysis<br>产品经理：docx + pdf + excalidraw-diagram + frontend-design</p><blockquote>一句话总结：Skill 不在于多，在于能在你每周重复两次以上的工作流里替你接住那些永远不变的琐碎。</blockquote>' },
+    10: { title: "国内 AI 月活破 4.4 亿：豆包领跑，华为昇腾量产，宇树科创板 IPO", date: "2026-05-10", tags: "国内动态 · 算力", body: '<h3>一、AI APP 月活排行</h3><p>2026 年 Q1 数据显示，国内 AI 原生 APP 月活跃用户突破 4.4 亿。前三甲：豆包 3.45 亿、千问 1.66 亿、DeepSeek 1.27 亿。AI 应用已经真正进入亿级用户的国民级阶段。</p><h3>二、华为昇腾量产</h3><p>华为发布多款昇腾 AI 芯片并实现规模量产，提出芯片新路径「韬定律」——在制程受限的情况下通过架构创新持续提升算力密度。这对中国 AI 产业链的自主可控意义重大。</p><h3>三、宇树科技 IPO</h3><p>宇树科技科创板 IPO 将于 6 月 1 日上会，拟募资 42.02 亿元。作为国内人形机器人龙头，宇树的上市被视为中国 AI 硬件赛道成熟的标志。</p><h3>四、政策加速</h3><p>国家层面正在加快推进人工智能健康发展的综合性立法。上海率先发布 AI 微短剧支持政策。中国法院首次裁定：企业不得仅因 AI 能替代某个岗位就解雇员工。</p><blockquote>一句话总结：中国 AI 正在从「跟跑」进入「并跑」，从技术突破走向产业化和制度化。</blockquote>' }
+};
+
+// ═══ 搜索 & 过滤 ═══
+var currentFilter = 'all';
+var searchInput = document.getElementById('searchInput');
+var noResults = document.getElementById('noResults');
+
+function filterArticles() {
+    var cards = document.querySelectorAll('.card');
+    var query = searchInput.value.toLowerCase().trim();
+    var visible = 0;
+    cards.forEach(function(card) {
+        var tags = card.getAttribute('data-tags').toLowerCase();
+        var title = card.getAttribute('data-title').toLowerCase();
+        var summary = card.querySelector('.summary').textContent.toLowerCase();
+        var matchFilter = (currentFilter === 'all') ||
+            tags.indexOf(currentFilter.toLowerCase()) !== -1;
+        var matchSearch = !query ||
+            title.indexOf(query) !== -1 ||
+            tags.indexOf(query) !== -1 ||
+            summary.indexOf(query) !== -1;
+        if (matchFilter && matchSearch) {
+            card.classList.remove('hidden');
+            visible++;
+        } else {
+            card.classList.add('hidden');
+        }
+    });
+    noResults.classList.toggle('show', visible === 0);
+}
+
+searchInput.addEventListener('input', filterArticles);
+
+document.querySelectorAll('nav .nav-links a').forEach(function(a) {
+    a.addEventListener('click', function(e) {
+        e.preventDefault();
+        document.querySelectorAll('nav .nav-links a').forEach(function(x) { x.classList.remove('active'); });
+        a.classList.add('active');
+        currentFilter = a.getAttribute('data-filter');
+        filterArticles();
+    });
+});
+
+// ═══ 模态框 ═══
+var modalOverlay = document.getElementById('modalOverlay');
+var modalInner = document.getElementById('modalInner');
+var closeModal = document.getElementById('closeModal');
+
+document.querySelectorAll('.card').forEach(function(card) {
+    card.addEventListener('click', function() {
+        var id = card.getAttribute('data-id');
+        var article = articles[id];
+        if (!article) return;
+        modalInner.innerHTML =
+            '<h2>' + article.title + '</h2>' +
+            '<div class="meta"><span>' + article.date + '</span><span>' + article.tags + '</span></div>' +
+            '<div class="article-body">' + article.body + '</div>';
+        modalOverlay.classList.add('show');
+        document.body.style.overflow = 'hidden';
+    });
+});
+
+closeModal.addEventListener('click', function() {
+    modalOverlay.classList.remove('show');
+    document.body.style.overflow = '';
+});
+modalOverlay.addEventListener('click', function(e) {
+    if (e.target === modalOverlay) {
+        modalOverlay.classList.remove('show');
+        document.body.style.overflow = '';
+    }
+});
+document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape' && modalOverlay.classList.contains('show')) {
+        modalOverlay.classList.remove('show');
+        document.body.style.overflow = '';
+    }
+});
+
+// ═══ 回到顶部 ═══
+var backTop = document.getElementById('backTop');
+window.addEventListener('scroll', function() {
+    backTop.classList.toggle('visible', window.scrollY > 500);
+});
+backTop.addEventListener('click', function() {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+});
+</script>
 
 </body>
 </html>
