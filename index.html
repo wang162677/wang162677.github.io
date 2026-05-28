@@ -396,33 +396,40 @@ function doSearch() {
     var query = searchInput.value.toLowerCase().trim();
     var activeTab = document.querySelector('.tab-btn.active').getAttribute('data-tab');
 
+    if (!query) {
+        noResults.classList.remove('show');
+        if (activeTab === 'resources') renderResources();
+        else if (activeTab === 'articles') renderArticles();
+        else renderHomeFeatured();
+        return;
+    }
+
+    // 全局搜索：同时搜资源和文章
+    var resFiltered = resources.filter(function(r) {
+        var h = (r.name+' '+r.cat+' '+r.tags.join(' ')+' '+r.desc).toLowerCase();
+        return h.indexOf(query) !== -1;
+    });
+    var artFiltered = articles.filter(function(a) {
+        var h = (a.title+' '+a.tags+' '+a.summary).toLowerCase();
+        return h.indexOf(query) !== -1;
+    });
+
+    var totalMatch = resFiltered.length + artFiltered.length;
+    noResults.classList.toggle('show', totalMatch === 0);
+
     if (activeTab === 'resources') {
-        if (!query) { renderResources(); noResults.classList.remove('show'); return; }
-        var filtered = resources.filter(function(r) {
-            var haystack = (r.name+' '+r.cat+' '+r.tags.join(' ')+' '+r.desc).toLowerCase();
-            return haystack.indexOf(query) !== -1;
-        });
-        renderResources(filtered);
-        noResults.classList.toggle('show', filtered.length === 0);
+        renderResources(resFiltered.length > 0 ? resFiltered : []);
     } else if (activeTab === 'articles') {
-        if (!query) { renderArticles(); noResults.classList.remove('show'); return; }
-        var filtered = articles.filter(function(a) {
-            var haystack = (a.title+' '+a.tags+' '+a.summary).toLowerCase();
-            return haystack.indexOf(query) !== -1;
-        });
-        renderArticles(filtered);
-        noResults.classList.toggle('show', filtered.length === 0);
+        renderArticles(artFiltered.length > 0 ? artFiltered : []);
     } else {
-        // home - search both
-        if (!query) { renderHomeFeatured(); noResults.classList.remove('show'); return; }
-        // switch to resources tab and search
-        switchTab('resources');
-        var filtered = resources.filter(function(r) {
-            var haystack = (r.name+' '+r.cat+' '+r.tags.join(' ')+' '+r.desc).toLowerCase();
-            return haystack.indexOf(query) !== -1;
-        });
-        renderResources(filtered);
-        noResults.classList.toggle('show', filtered.length === 0);
+        // 首页：优先跳到有结果的 tab
+        if (resFiltered.length > 0) {
+            switchTabSilent('resources');
+            renderResources(resFiltered);
+        } else if (artFiltered.length > 0) {
+            switchTabSilent('articles');
+            renderArticles(artFiltered);
+        }
     }
 }
 
@@ -430,12 +437,16 @@ searchInput.addEventListener('input', doSearch);
 
 // ═══════════ 标签切换 ═══════════
 function switchTab(tab) {
+    switchTabSilent(tab);
+    searchInput.value = '';
+    noResults.classList.remove('show');
+}
+
+function switchTabSilent(tab) {
     document.querySelectorAll('.tab-btn').forEach(function(b){b.classList.remove('active')});
     document.querySelector('[data-tab="'+tab+'"]').classList.add('active');
     document.querySelectorAll('.section').forEach(function(s){s.classList.remove('active')});
     document.getElementById('sec-'+tab).classList.add('active');
-    noResults.classList.remove('show');
-    searchInput.value = '';
     if (tab === 'resources') renderResources();
     if (tab === 'articles') renderArticles();
     if (tab === 'home') renderHomeFeatured();
