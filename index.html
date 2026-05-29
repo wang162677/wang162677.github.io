@@ -77,7 +77,15 @@ nav{background:var(--card);padding:10px 20px;border-bottom:1px solid var(--borde
 .card.hidden,.res-card.hidden{display:none}
 
 /* ad */
-.ad-placeholder{background:var(--card);border:2px dashed var(--border);border-radius:12px;text-align:center;padding:28px;margin:24px 0;color:#555;font-size:.85em}
+.ad-card{background:linear-gradient(135deg,#1a1a3e 0%,#1e1e4a 50%,#16213e 100%);border:1px solid #2a2a5a;border-radius:12px;padding:22px 24px;margin:24px 0;display:flex;align-items:center;gap:20px;transition:border-color .2s}
+.ad-card:hover{border-color:var(--cyan)}
+.ad-card .ad-icon{font-size:2.2em;flex-shrink:0}
+.ad-card .ad-body{flex:1}
+.ad-card .ad-body h4{color:var(--cyan);font-size:1em;margin-bottom:4px}
+.ad-card .ad-body p{color:var(--muted);font-size:.82em;line-height:1.5;margin:0}
+.ad-card .ad-cta{background:var(--cyan);color:#000;border:none;padding:8px 20px;border-radius:6px;font-weight:bold;font-size:.85em;cursor:pointer;text-decoration:none;flex-shrink:0;white-space:nowrap;transition:all .2s}
+.ad-card .ad-cta:hover{background:#00ffff;transform:scale(1.04)}
+@media(max-width:640px){.ad-card{flex-direction:column;text-align:center}}
 
 /* no results */
 .no-res{text-align:center;padding:40px;color:var(--muted);display:none}
@@ -155,9 +163,17 @@ var _hmt=_hmt||[];(function(){var hm=document.createElement("script");hm.src="ht
         <h2>2026 年 5 月 AI 十大热点</h2>
         <p>GPT-5.5 · Anthropic 盈利 · DeepSeek V4 · Gemini Omni · AI 融资纪录</p>
     </div>
-    <div class="ad-placeholder">—— 广告位 ——</div>
+    <a class="ad-card" href="https://cursor.com" target="_blank" rel="noopener" style="text-decoration:none">
+        <div class="ad-icon">🖥️</div>
+        <div class="ad-body"><h4>Cursor · AI 编程 IDE</h4><p>估值500亿的AI原生编辑器，智能补全+多文件重构，编程效率翻倍</p></div>
+        <span class="ad-cta">免费试用 →</span>
+    </a>
     <div id="articleList"></div>
-    <div class="ad-placeholder">—— 广告位 ——</div>
+    <a class="ad-card" href="https://www.doubao.com" target="_blank" rel="noopener" style="text-decoration:none">
+        <div class="ad-icon">🤖</div>
+        <div class="ad-body"><h4>豆包 · 3.45亿月活AI助手</h4><p>字节跳动出品，国内最受欢迎的AI对话助手，写文案/翻译/学习全能</p></div>
+        <span class="ad-cta">免费使用 →</span>
+    </a>
 </section>
 
 <!-- ═══════════ 资源库 ═══════════ -->
@@ -166,9 +182,17 @@ var _hmt=_hmt||[];(function(){var hm=document.createElement("script");hm.src="ht
         <h2>AI 资源库：工具、模型、教程、Claude Code Skills 一站收录</h2>
         <p>90+ AI 工具 · 开源大模型 · 学习资源 · 13 个 Claude Code Skills | 分类浏览 · 搜索直达 · 持续更新</p>
     </div>
-    <div class="ad-placeholder">—— 广告位 ——</div>
+    <a class="ad-card" href="https://claude.ai/code" target="_blank" rel="noopener" style="text-decoration:none">
+        <div class="ad-icon">⚡</div>
+        <div class="ad-body"><h4>Claude Code · 终端AI编程</h4><p>Anthropic出品，Skills生态+Agent工作流，2026最火编程工具，效率提升300%</p></div>
+        <span class="ad-cta">立即体验 →</span>
+    </a>
     <div id="resourceList"></div>
-    <div class="ad-placeholder">—— 广告位 ——</div>
+    <a class="ad-card" href="https://dify.ai" target="_blank" rel="noopener" style="text-decoration:none">
+        <div class="ad-icon">🔧</div>
+        <div class="ad-body"><h4>Dify · AI应用搭建平台</h4><p>开源LLM应用平台，可视化搭建AI工作流+Agent+知识库，零代码上手</p></div>
+        <span class="ad-cta">免费开始 →</span>
+    </a>
 </section>
 
 <div class="no-res" id="noResults"><p>🔍 没有找到匹配的资源或文章，试试其他关键词</p></div>
